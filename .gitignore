@@ -1,0 +1,14 @@
+
+/target/
+**/*.rs.bk
+*.exe
+*.out
+*.dll
+*.so
+*.dylib
+.idea/
+.vscode/
+*.swp
+.DS_Store
+*.log
+*.tmp
