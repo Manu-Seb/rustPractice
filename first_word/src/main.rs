@@ -10,7 +10,7 @@ fn main() {
     println!("{word} is the first word");
 }
 
-fn find_first_word(s: &String) -> &str {
+fn find_first_word(s: &str) -> &str {
     let items = s.as_bytes();
 
     for (i, &item) in items.iter().enumerate() {
