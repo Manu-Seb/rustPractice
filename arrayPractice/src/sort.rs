@@ -1,42 +1,28 @@
-use std::io;
+pub enum Sort {
+    Insertion(Vec<i32>),
+    Quick(Vec<i32>),
+}
 
-pub fn impl_with_insertion_sort() {
-    println!("enter the number of digits");
-    let mut n = String::new();
-    io::stdin().read_line(&mut n).expect("Could not read line");
-    let n: u32 = n.trim().parse().expect("Could not parse");
-
-    println!("enter the values");
-    let mut arr: Vec<i32> = Vec::new();
-    for _ in 0..n {
-        let mut val = String::new();
-        io::stdin()
-            .read_line(&mut val)
-            .expect("Could not read line");
-        let val: i32 = val.trim().parse().expect("Could not parse");
-
-        arr.push(val);
-    }
-    insertion_sort(&mut arr, n);
-    println!("The array is:");
-    for i in 0..n as usize {
-        let number = arr.get(i);
-        if let Some(num) = number {
-            print!("{} ", num);
+impl Sort {
+    pub fn sort(&mut self) {
+        match self {
+            Sort::Insertion(arr) => insertion_wrapper(arr),
+            Sort::Quick(arr) => quick_wrapper(arr),
         }
-    }
-    println!();
-
-    let half = &n / 2;
-
-    print!("The median is ");
-    let num = arr.get(half as usize);
-    if let Some(num) = num {
-        println!("{}", num);
     }
 }
 
-fn insertion_sort(arr: &mut Vec<i32>, n: u32) {
+fn insertion_wrapper(arr: &mut Vec<i32>) {
+    let len = arr.len();
+    insertion_sort(arr, len as u32);
+}
+
+fn quick_wrapper(arr: &mut Vec<i32>) {
+    let left = 0;
+    let len = arr.len();
+    quick_sort(arr, left, len - 1);
+}
+pub fn insertion_sort(arr: &mut Vec<i32>, n: u32) {
     for i in 0..n as usize {
         for j in 0..n as usize {
             let first = arr.get(i);
@@ -54,52 +40,13 @@ fn insertion_sort(arr: &mut Vec<i32>, n: u32) {
         }
     }
 }
-pub fn impl_with_quick_sort() {
-    println!("enter the number of digits");
-    let mut n = String::new();
-    io::stdin().read_line(&mut n).expect("Could not read line");
-    let n: u32 = n.trim().parse().expect("Could not parse");
 
-    println!("enter the values");
-    let mut arr: Vec<i32> = Vec::new();
-    for _ in 0..n {
-        let mut val = String::new();
-        io::stdin()
-            .read_line(&mut val)
-            .expect("Could not read line");
-        let val: i32 = val.trim().parse().expect("Could not parse");
-
-        arr.push(val);
-    }
-
-    let left = 0;
-    let right = arr.len() - 1;
-    quick_sort(&mut arr, left, right);
-
-    println!("The array is:");
-    for i in 0..n as usize {
-        let number = arr.get(i);
-        if let Some(num) = number {
-            print!("{} ", num);
-        }
-    }
-    println!();
-
-    let half = &n / 2;
-
-    print!("The median is ");
-    let num = arr.get(half as usize);
-    if let Some(num) = num {
-        println!("{}", num);
-    }
-}
-
-fn quick_sort(arr: &mut Vec<i32>, left: usize, right: usize) {
+pub fn quick_sort(arr: &mut Vec<i32>, left: usize, right: usize) {
     if left < right {
         let pivot = partition(arr, left, right);
 
         if pivot > 0 {
-            quick_sort(arr, left, pivot -1);
+            quick_sort(arr, left, pivot - 1);
         }
         quick_sort(arr, pivot + 1, right);
     }
